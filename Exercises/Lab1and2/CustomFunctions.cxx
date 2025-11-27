@@ -147,13 +147,13 @@ vector<double> doLeastSquares(ifstream& data_file){
     //initialises a variable for chi squared
     double chiSquared;
 
-    //calculates chi squared according to the formula provided
+    //calculates chi squared / number of degrees of freedom, according to the formula provided
     for (int i =0; i<=N-1; i++){
-        chiSquared += (p*x[i]+q-y[i])*(p*x[i]+q-y[i])/(yerrs[i]*yerrs[i]+xerrs[i]*xerrs[i]);
+        chiSquared += 0.5*(p*x[i]+q-y[i])*(p*x[i]+q-y[i])/(yerrs[i]*yerrs[i]+xerrs[i]*xerrs[i]);
     }
 
     //prints the value of chi squared
-    cout << "The chi squared for the line of best fit is: " << chiSquared << endl;
+    cout << "The chi squared per number of degrees of freedom for the line of best fit is: " << chiSquared << endl;
 
     //prepares a variable to create or open a file StraightLineFunction.txt
     ofstream outStream;
@@ -280,7 +280,7 @@ void saveToFile(string& X, vector<double>& data){
         //prints the results of the least squares fit to the file
         outStream << "The line of least fit is:" << endl;
         outStream << "y=" << data[0] << "x+" << data[1] << endl;
-        outStream << "The chi squared of this fit is:" << endl;
+        outStream << "The chi squared per number of degrees of freedom of this fit is:" << endl;
         outStream << data[2] << endl;
 
         //closes file
