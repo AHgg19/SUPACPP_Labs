@@ -1,0 +1,4 @@
+The line of least fit is:
+y=0.126266x+2.02628
+The chi squared of this fit is:
+206.829
