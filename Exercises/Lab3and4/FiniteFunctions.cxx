@@ -61,9 +61,27 @@ double FiniteFunction::callFunction(double x) {return this->invxsquared(x);}; //
 Integration by hand (output needed to normalise function when plotting)
 ###################
 */ 
+
+//computes the integral of a function by using a finite Riemann sum to approximate, given a number of divisions
 double FiniteFunction::integrate(int Ndiv){ //private
-  //ToDo write an integrator
-  return -99;  
+  
+  //calculates the width of the intervals used in the Riemann sum, which for int_a^bf(x)dx, is given by (b-a)/N,
+  //where a is the lower bound, b the upper bound, and N the number of divisions
+  double delta = (m_RMax-m_RMin)/Ndiv;
+  
+  //initialises a double to store the value of the integral
+  double integralValue = 0;
+
+  //the Riemann sum is I = Sum f(x_i)Delta, where x_i = a * delta*i, the code below just implements this
+  for(int i = 0; i<=Ndiv; i++){
+
+    double xi = m_RMin + i * delta;
+    integralValue += callFunction(xi) * delta;
+
+  }
+
+  //returns the value of the integral
+  return integralValue;
 }
 double FiniteFunction::integral(int Ndiv) { //public
   if (Ndiv <= 0){

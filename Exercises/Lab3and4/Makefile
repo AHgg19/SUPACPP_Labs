@@ -19,13 +19,13 @@ FiniteFunctions.o : FiniteFunctions.cxx FiniteFunctions.h
 CustomFunctions.o : CustomFunctions.cxx
 	${CC} ${FLAGS} ${LIBS} -c CustomFunctions.cxx
 	
-CalculatePi.o : CalculatePi.cxx
-	${CC} ${FLAGS} ${LIBS} -c CalculatePi.cxx
+#CalculatePi.o : CalculatePi.cxx
+#	${CC} ${FLAGS} ${LIBS} -c CalculatePi.cxx
 
-CalculatePi : CalculatePi.o
-	@echo "Linking for CalculatePi..."
-	${CC} ${FLAGS} CalculatePi.o -o CalculatePi
-	@make clean
+#CalculatePi : CalculatePi.o
+#	@echo "Linking for CalculatePi..."
+#	${CC} ${FLAGS} CalculatePi.o -o CalculatePi
+#	@make clean
 	
 clean: #No targets just run shell command to rm object files and emacs backups
 	@rm -f *.o *~
