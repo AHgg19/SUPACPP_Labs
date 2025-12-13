@@ -26,10 +26,10 @@ int main(){
     //creates an instance of the FiniteFunction class, with the low end of the function range 
     FiniteFunction myFunction(-10, 10, "MysteryData16162Plot");
 
-    //creates an instance of each of subclasses for each distribution
-    Normal normalDist(-10, 10, 3, 0.9, "NormalDistributionTest");
-    CauchyLorentz lorentzDist(-10, 10, 3, 0.77, "LorentzDistTest");
-    CrystalBall crystDist(-10, 10, 3, 0.8, 2, 1, "CrystalBallTest");
+    //creates an instance of each of subclasses for each distribution, with ranges -10 to 10
+    Normal normalDist(-10, 10, 3, 0.9, "NormalDistributionTest"); //choose x0 = 3, sigma = 0.9
+    CauchyLorentz lorentzDist(-10, 10, 3, 0.77, "LorentzDistTest"); //choose x0 = 3, gamma = 0.77
+    CrystalBall crystDist(-10, 10, 3, 0.8, 2, 1, "CrystalBallTest"); //choose xbar = 0.3, sigma = 0.8, n = 2 and alpha = 1
 
     //sets a number of bins to use
     int myBins = 50;
@@ -124,5 +124,7 @@ int main(){
 
     //after testing, it is clear that the mystery data came from a Cauchy-Lorentz distribution 
     //centred at x=3, with a half-width at half-maximum of 0.77
+    
+    //using a Gaussian with width 0.7 seems to make the metropolis algorithm work fairly well
 
 }

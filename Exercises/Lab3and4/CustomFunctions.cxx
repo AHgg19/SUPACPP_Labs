@@ -193,6 +193,9 @@ double CrystalBall::callFunction(double x){
 
 }
 
+//for print info, we can use the printInfo() function from the parent class
+//we can then add some distribution specific information, e.g. for the normal distribution we can print the mean and standard deviation
+
 void Normal::printInfo(){
 
     cout << "Normal distribution with mean " << m_x0 << " and standard deviation " << m_sigma << "." << endl;   
@@ -214,33 +217,47 @@ void CrystalBall::printInfo(){
 
 }
 
-//implementation of the metropolis algorithm
+//implementation of the metropolis algorithm, given a file name to write to, and the number of points the user wishes to generate
 void Normal::generateRandomNumbers(int NpointsNormal, string fnameNormal){
 
+    //sets up a random number generator
     random_device rd;
     mt19937 mtEngine{rd()};
+    //have uniform distributions for x_i and T in the metropolis algorithm formulae
     uniform_real_distribution<double> uniformDist{m_RMin, m_RMax};
     uniform_real_distribution<double> uniformDist2{0,1};
 
+    //sets up vector for the sampled points
     vector<double> pointsNormal;
+    //when using the min function, it seems both inputs need to be the same, so this is just 1 as a double (clunk, but it works)
     double numberOne = 1;
 
+    // generates the first random data point
     double x0 = uniformDist(mtEngine);
 
     pointsNormal.push_back(x0); 
 
-    for (int j = 1 ; j <=NpointsNormal ; j++){
+    //now loop for the rest of the points
+    for (int j = 1 ; j <=NpointsNormal-1 ; j++){
+
+        //generates gaussian with sigma=0.7 (seems to work), centred on the previous point
 
         normal_distribution<float> gaussianPDF{pointsNormal[j-1], 0.7};
 
+        //samples from the gaussian
         double y = gaussianPDF(mtEngine);
 
+
+        //calculates the ratio f(y)/f(x_i) for the given distribution
         double ratio = Normal::callFunction(y)/Normal::callFunction(pointsNormal[j-1]);
 
+        //calculates the minimum of the ratio and 1
         double A = min(ratio, numberOne);
 
+        //random number sampled uniformly in the range 0 to 1
         double T = uniformDist2(mtEngine);
 
+        //determines whether to accept y or not
         if (T < A){
 
             pointsNormal.push_back(y);
@@ -254,6 +271,7 @@ void Normal::generateRandomNumbers(int NpointsNormal, string fnameNormal){
 
     }
 
+    //prepares file to write data to
     ofstream outStream;
 
     outStream.open("Outputs/data/" + fnameNormal + ".txt");
@@ -263,15 +281,19 @@ void Normal::generateRandomNumbers(int NpointsNormal, string fnameNormal){
     cout << "Error opening file!" << endl;
     }
 
+    //writes data to the file
     for (int i = 0 ; i<=pointsNormal.size()-1 ; i++){
 
         outStream << pointsNormal[i] << endl;
 
     }
 
+    //closes file
     outStream.close();
 
 }
+
+//the exact same as above, except we now call either the Cauchy-Lorentz or Crystal Ball distributions
 
 void CauchyLorentz::generateRandomNumbers(int NpointsLorentz, string fnameLorentz){
 
@@ -287,7 +309,7 @@ void CauchyLorentz::generateRandomNumbers(int NpointsLorentz, string fnameLorent
 
     pointsLorentz.push_back(x0); 
 
-    for (int j = 1 ; j <=NpointsLorentz ; j++){
+    for (int j = 1 ; j <=NpointsLorentz-1 ; j++){
 
         normal_distribution<float> gaussianPDF{pointsLorentz[j-1], 0.7};
 
@@ -345,7 +367,7 @@ void CrystalBall::generateRandomNumbers(int NpointsCrystal, string fnameCrystal)
 
     points.push_back(x0); 
 
-    for (int j = 1 ; j <=NpointsCrystal ; j++){
+    for (int j = 1 ; j <=NpointsCrystal-1 ; j++){
 
         normal_distribution<float> gaussianPDF{points[j-1], 0.7};
 
